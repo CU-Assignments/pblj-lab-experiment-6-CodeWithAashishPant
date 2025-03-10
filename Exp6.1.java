@@ -19,6 +19,64 @@ Step 3: Display the Sorted List
 Use forEach() with a method reference to print the sorted employees.
 
 
+import java.util.*;
+import java.util.stream.Collectors;
+
+class Employee {
+    String name;
+    int age;
+    double salary;
+    
+    public Employee(String name, int age, double salary) {
+        this.name = name;
+        this.age = age;
+        this.salary = salary;
+    }
+    
+    public void display() {
+        System.out.println(name + " (" + age + ", " + salary + ")");
+    }
+}
+
+public class EmployeeSorting {
+    public static void main(String[] args) {
+        List<Employee> employees = new ArrayList<>();
+        employees.add(new Employee("Alice", 30, 50000));
+        employees.add(new Employee("Bob", 25, 60000));
+        employees.add(new Employee("Charlie", 35, 55000));
+        employees.add(new Employee("Alex", 28, 45000));
+        employees.add(new Employee("Alex", 32, 47000));
+        employees.add(new Employee("Alex", 25, 46000));
+        employees.add(new Employee("David", 29, 50000));
+        employees.add(new Employee("Eve", 31, 50000));
+        employees.add(new Employee("Frank", 27, 50000));
+        
+        // Sorting by Name (Alphabetical Order)
+        List<Employee> sortedByName = employees.stream()
+                .sorted(Comparator.comparing(e -> e.name))
+                .collect(Collectors.toList());
+        
+        System.out.println("Sorted by Name:");
+        sortedByName.forEach(Employee::display);
+        
+        // Sorting by Age (Ascending Order)
+        List<Employee> sortedByAge = employees.stream()
+                .sorted(Comparator.comparingInt(e -> e.age))
+                .collect(Collectors.toList());
+        
+        System.out.println("\nSorted by Age:");
+        sortedByAge.forEach(Employee::display);
+        
+        // Sorting by Salary (Descending Order)
+        List<Employee> sortedBySalary = employees.stream()
+                .sorted(Comparator.comparingDouble((Employee e) -> e.salary).reversed())
+                .collect(Collectors.toList());
+        
+        System.out.println("\nSorted by Salary:");
+        sortedBySalary.forEach(Employee::display);
+    }
+}
+
 Test Cases
 Test Case         	Input Data                                                      	                    Expected Output
 Case 1:       Sorting by Name	Alice (30, 50000), Bob (25, 60000), Charlie (35, 55000)	                    Alice, Bob, Charlie (sorted alphabetically)
