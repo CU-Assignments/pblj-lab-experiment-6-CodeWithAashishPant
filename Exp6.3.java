@@ -25,6 +25,72 @@ Step 2: Create the ProductProcessor Class
 - Display the results.
 
 
+import java.util.*;
+import java.util.stream.Collectors;
+
+class Product {
+    String name;
+    String category;
+    double price;
+    
+    public Product(String name, String category, double price) {
+        this.name = name;
+        this.category = category;
+        this.price = price;
+    }
+    
+    @Override
+    public String toString() {
+        return name + " ($" + price + ")";
+    }
+}
+
+public class ProductProcessor {
+    public static void main(String[] args) {
+        List<Product> products = Arrays.asList(
+            new Product("Laptop", "Electronics", 1200),
+            new Product("Phone", "Electronics", 800),
+            new Product("TV", "Electronics", 1500),
+            new Product("Jeans", "Clothing", 60),
+            new Product("T-Shirt", "Clothing", 25),
+            new Product("Sneakers", "Footwear", 90),
+            new Product("Boots", "Footwear", 120),
+            new Product("Sandals", "Footwear", 120)
+        );
+        
+        // Group products by category
+        Map<String, List<Product>> groupedByCategory = products.stream()
+                .collect(Collectors.groupingBy(p -> p.category));
+        
+        // Find most expensive product in each category
+        Map<String, Optional<Product>> mostExpensiveByCategory = products.stream()
+                .collect(Collectors.groupingBy(
+                        p -> p.category,
+                        Collectors.maxBy(Comparator.comparingDouble(p -> p.price))
+                ));
+        
+        // Calculate the average price of all products
+        double averagePrice = products.stream()
+                .collect(Collectors.averagingDouble(p -> p.price));
+        
+        // Display grouped products
+        System.out.println("Grouped Products:");
+        groupedByCategory.forEach((category, productList) -> {
+            System.out.println(category + ": " + productList);
+        });
+        
+        // Display most expensive product in each category
+        System.out.println("\nMost Expensive Product per Category:");
+        mostExpensiveByCategory.forEach((category, product) -> 
+            System.out.println(category + ": " + product.orElse(null))
+        );
+        
+        // Display average price
+        System.out.println("\nAverage Price of All Products: $" + averagePrice);
+    }
+}
+
+
   
     Test Cases
     Test Case	                                     Input Data	                                                                           Expected Output
